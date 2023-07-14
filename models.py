@@ -1,17 +1,21 @@
 from tortoise import fields, models
-from tortoise.contrib.fastapi import HTTPNotFoundError, register_tortoise
-from tortoise.exceptions import *
-from tortoise.query_utils import Q
-from tortoise.transactions import atomic
+# from tortoise.contrib.fastapi import HTTPNotFoundError, register_tortoise
+# from tortoise.exceptions import *
+# from tortoise.query_utils import Q
+# from tortoise.transactions import atomic
 
 
 class CargoType(models.Model):
     """Model for cargo type."""
 
-    type = fields.CharField(max_length=50, pk=True)
+    id = fields.IntField(pk=True)
+    type = fields.CharField(max_length=50)
 
-    class Meta:
-        table = 'cargo_types'
+    # class Meta:
+    #     table = 'cargo_types'
+
+    # def __str__(self) -> str:
+    #     return self.name
 
 
 class DateRate(models.Model):
@@ -19,9 +23,11 @@ class DateRate(models.Model):
 
     id = fields.IntField(pk=True)
     date = fields.DateField(unique=True)
-    cargo = fields.ForeignKeyField(CargoType, related_name='rates',
+    cargo = fields.ForeignKeyField('models.CargoType', related_name='rates',
                                    on_delete=fields.RESTRICT)
+    rate = fields.FloatField()
 
     class Meta:
         table = 'rates'
         unique_together = ('date', 'cargo')
+
