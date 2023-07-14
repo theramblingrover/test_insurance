@@ -12,6 +12,7 @@ class CargoRate(BaseModel):
     cargo_type: str
     rate: float
 
+
 class DailyRate(RootModel):
     root: Dict[str, List[CargoRate]] = Field(examples=[{
         '2020-06-01': [
@@ -19,10 +20,6 @@ class DailyRate(RootModel):
             {'cargo_type': 'Other', 'rate': '0.02'}
         ]
     }])
-
-
-class Rate(BaseModel):
-    rate: DailyRate
 
 
 @app.post('/add_tariff')
