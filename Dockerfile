@@ -8,4 +8,4 @@ RUN pip3 install -r /app/requirements.txt --no-cache-dir
 
 COPY ./ /app
 
-CMD python main.py
+# CMD python main.py
