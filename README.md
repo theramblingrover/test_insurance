@@ -1,6 +1,6 @@
 # Insurance calc (test task)
 
-## Test project for interview.
+## Test project for job interview.
 
 Simple REST API provides calculation of insuranse rates for differen types of cargos depends on the date.
 ## Stack: 
@@ -21,16 +21,7 @@ in the root folder of the project
 
 First it will bring up DB service, next step applies midrations to database and finally API will start.
 
-Access it on 
+Access API on <http://localhost:8000>
 
-```
-http://localhost:8000
 
-```
-
-Try 
-```
-http://localhost:8000/docs
-```
-
-to learn about endpoints and schemas
+Try <http://localhost:8000/docs> to learn about endpoints and schemas
