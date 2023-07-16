@@ -31,11 +31,11 @@ and now we can start API service:
 docker compose up backend
 ```
 
-First it will bring up DB service, next step applies midrations to database and finally API will start.
+First we bring up DB service, next step applies migrations to database and finally API will start.
 
-Access API on <http://localhost:8000>
+Access API on <http://localhost:8000>.
 
 
-Try <http://localhost:8000/docs> to learn about endpoints and schemas
+Try <http://localhost:8000/docs> to learn about endpoints and schemas.
 
-gendata.py generates dates, cargo types and rates. Run it and copy output to Postman/Swagger to fill database.
+```gendata.py``` generates dates, cargo types and rates. Run it and copy output to Postman/Swagger to fill database.
