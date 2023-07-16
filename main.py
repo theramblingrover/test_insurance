@@ -1,7 +1,8 @@
 from typing import Dict, List
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field, RootModel
 from tortoise.contrib.fastapi import HTTPNotFoundError, register_tortoise
+from tortoise.transactions import atomic
 
 from models import DateRate, CargoType
 
@@ -39,7 +40,7 @@ class InsurPrice(BaseModel):
     date: str
     cargo_type: str
 
-
+@atomic()
 async def create_tariff(data: Dict[List, DailyRate]):
     for date in data.keys():
         for item in data[date]:
@@ -55,27 +56,28 @@ async def create_tariff(data: Dict[List, DailyRate]):
                 )
             if created:
                 await date_rate.save()
-    
+
 
 
 @app.post("/add_tariff")
 async def add_tariff(root: DailyRate):
-    print(root)
     await create_tariff(root.model_dump())
     return {"status": 200, "result": root}
 
 
 @app.get("/get_price")
 async def get_rate(cargo_type: str, date: str, cost: float):
-    print(cargo_type, date, cost)
-    cargo = (await CargoType.filter(
-        name=cargo_type
+    cargo = await CargoType.get(name=cargo_type.lower())
+    cargo = await (CargoType.filter(
+        name=cargo_type.lower()
         ).select_related('rates').filter(rates__date=date) or
-    await CargoType.filter(
-        name="Other"
-        ).select_related('rates').filter(rates__date=date))
+        await CargoType.filter(
+            name="Other".lower
+            ).select_related('rates').filter(rates__date=date))
+    if not cargo:
+        return HTTPNotFoundError(detail="No rate for this date")
     return InsurPrice(
-        price=float(cargo[0].rates.rate)*cost,
+        price=round(float(cargo[0].rates.rate)*cost, 2),
         cost=cost,
         rate=cargo[0].rates.rate,
         date=date,
@@ -85,7 +87,7 @@ async def get_rate(cargo_type: str, date: str, cost: float):
 
 register_tortoise(
     app,
-    db_url="postgres://myuser:mypassword@localhost:5432/mydatabase",
+    db_url="postgres://myuser:mypassword@db:5432/mydatabase",
     modules={"models": ["models"]},
     generate_schemas=True,
     add_exception_handlers=True,

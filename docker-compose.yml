@@ -9,4 +9,14 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - /var/lib/postgresql/data/
+      - db_volume:/var/lib/postgresql/data/
+  backend:
+    build: ./
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    restart: always
+
+volumes:
+  db_volume:

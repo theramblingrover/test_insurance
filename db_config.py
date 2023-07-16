@@ -8,7 +8,7 @@ from main import app
 
 async def init_db():
     await Tortoise.init(
-        db_url="postgres://myuser:mypassword@localhost:5432/mydatabase",
+        db_url="postgres://myuser:mypassword@db:5432/mydatabase",
         modules={"models": ["models"]},
     )
     await Tortoise.generate_schemas()
@@ -31,7 +31,7 @@ async def on_shutdown():
 TORTOISE_ORM = {
     "debug": True,
     "connections": {
-        "default": "postgres://myuser:mypassword@localhost:5432/mydatabase",
+        "default": "postgres://myuser:mypassword@db:5432/mydatabase",
     },
     "apps": {
         "models": {

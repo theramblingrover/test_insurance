@@ -1,10 +1,5 @@
 from tortoise import fields, models
 
-# from tortoise.contrib.fastapi import HTTPNotFoundError, register_tortoise
-# from tortoise.exceptions import *
-# from tortoise.query_utils import Q
-# from tortoise.transactions import atomic
-
 
 class CargoType(models.Model):
     """Model for cargo type."""
@@ -32,3 +27,6 @@ class DateRate(models.Model):
     class Meta:
         table = "rates"
         unique_together = ("date", "cargo")
+
+    def __str__(self) -> str:
+        return f'Тариф на дату {self.date} составляет {self.rate}'
