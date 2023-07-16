@@ -1,5 +1,5 @@
 from typing import Dict, List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel, Field, RootModel
 from tortoise.contrib.fastapi import HTTPNotFoundError, register_tortoise
 from tortoise.transactions import atomic
@@ -8,7 +8,6 @@ from models import DateRate, CargoType
 
 
 app = FastAPI(title="Insurance calc")
-
 
 
 class CargoRate(BaseModel):
@@ -40,6 +39,7 @@ class InsurPrice(BaseModel):
     date: str
     cargo_type: str
 
+
 @atomic()
 async def create_tariff(data: Dict[List, DailyRate]):
     for date in data.keys():
@@ -56,7 +56,6 @@ async def create_tariff(data: Dict[List, DailyRate]):
                 )
             if created:
                 await date_rate.save()
-
 
 
 @app.post("/add_tariff")
