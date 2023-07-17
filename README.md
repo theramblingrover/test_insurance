@@ -19,7 +19,7 @@ docker compose up db
 ```
 in the root folder of the project.
 
-Make sure if database accepts connections and run migrations if nessesary:
+Make sure if the database accepts connections and run migrations if nessesary:
 
 ```
 docker compose up automigrate
@@ -36,6 +36,6 @@ First we bring up DB service, next step applies migrations to database and final
 Access API on <http://localhost:8000>.
 
 
-Try <http://localhost:8000/docs> to learn about endpoints and schemas.
+Visit <http://localhost:8000/docs> to learn about endpoints and schemas.
 
 ```gendata.py``` generates dates, cargo types and rates. Run it and copy output to Postman/Swagger to fill database.
